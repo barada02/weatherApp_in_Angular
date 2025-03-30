@@ -1,1 +1,16 @@
-/* You can add global styles to this file, and also import other style files */
+/* Global styles with dark theme */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+  background-color: #1a1a2e; /* Dark background */
+  color: #e6e6e6; /* Light text color */
+}
+
+* {
+  box-sizing: inherit;
+}
