@@ -87,33 +87,35 @@
       </ng-container>
       
       <ng-container *ngIf="hourlyForecast.length && !forecastLoading && !forecastError">
-        <div class="forecast-tabs">
-          <div class="tab" 
-               [ngClass]="{'active': activeTab === 'temperature'}"
-               (click)="setActiveTab('temperature')">
-            Temperature
+        <div class="forecast-content">
+          <div class="forecast-tabs">
+            <div class="tab" 
+                 [ngClass]="{'active': activeTab === 'temperature'}"
+                 (click)="setActiveTab('temperature')">
+              Temperature
+            </div>
+            <div class="tab"
+                 [ngClass]="{'active': activeTab === 'precipitation'}"
+                 (click)="setActiveTab('precipitation')">
+              Precipitation
+            </div>
+            <div class="tab"
+                 [ngClass]="{'active': activeTab === 'wind'}"
+                 (click)="setActiveTab('wind')">
+              Wind
+            </div>
           </div>
-          <div class="tab"
-               [ngClass]="{'active': activeTab === 'precipitation'}"
-               (click)="setActiveTab('precipitation')">
-            Precipitation
-          </div>
-          <div class="tab"
-               [ngClass]="{'active': activeTab === 'wind'}"
-               (click)="setActiveTab('wind')">
-            Wind
-          </div>
-        </div>
-        
-        <div class="chart-container">
-          <canvas *ngIf="hourlyForecast.length > 0"
-            baseChart
-            [type]="lineChartType"
-            [data]="lineChartData"
-            [options]="lineChartOptions">
-          </canvas>
-          <div *ngIf="hourlyForecast.length === 0" class="loading-message">
-            No forecast data available
+          
+          <div class="chart-container">
+            <canvas *ngIf="hourlyForecast.length > 0"
+              baseChart
+              [type]="lineChartType"
+              [data]="lineChartData"
+              [options]="lineChartOptions">
+            </canvas>
+            <div *ngIf="hourlyForecast.length === 0" class="loading-message">
+              No forecast data available
+            </div>
           </div>
         </div>
       </ng-container>

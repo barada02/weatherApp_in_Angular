@@ -57,7 +57,11 @@ export class HomePageComponent implements OnInit, AfterViewInit {
           color: 'rgba(255, 255, 255, 0.1)'
         },
         ticks: {
-          color: 'rgba(255, 255, 255, 0.7)'
+          color: 'rgba(255, 255, 255, 0.7)',
+          font: {
+            size: 10 // Smaller font size for x-axis labels
+          },
+          maxRotation: 0 // Prevent label rotation
         }
       },
       y: {
@@ -65,7 +69,11 @@ export class HomePageComponent implements OnInit, AfterViewInit {
           color: 'rgba(255, 255, 255, 0.1)'
         },
         ticks: {
-          color: 'rgba(255, 255, 255, 0.7)'
+          color: 'rgba(255, 255, 255, 0.7)',
+          font: {
+            size: 10 // Smaller font size for y-axis labels
+          },
+          padding: 5 // Add some padding
         },
         beginAtZero: true
       },
@@ -73,8 +81,13 @@ export class HomePageComponent implements OnInit, AfterViewInit {
     plugins: {
       legend: {
         display: true,
+        position: 'top',
         labels: {
-          color: 'rgba(255, 255, 255, 0.7)'
+          color: 'rgba(255, 255, 255, 0.7)',
+          font: {
+            size: 12 // Smaller legend font size
+          },
+          padding: 10
         }
       },
       tooltip: {
@@ -82,11 +95,30 @@ export class HomePageComponent implements OnInit, AfterViewInit {
         titleColor: '#fff',
         bodyColor: '#fff',
         borderColor: 'rgba(255, 255, 255, 0.2)',
-        borderWidth: 1
+        borderWidth: 1,
+        padding: 10,
+        displayColors: false // Hide color boxes in tooltip
       }
     },
     animation: {
       duration: 1000
+    },
+    layout: {
+      padding: {
+        top: 5,
+        right: 10,
+        bottom: 5,
+        left: 10
+      }
+    },
+    elements: {
+      point: {
+        radius: 3, // Smaller points
+        hoverRadius: 5 // Slightly larger on hover
+      },
+      line: {
+        tension: 0.4 // Smooth curves
+      }
     }
   };
 

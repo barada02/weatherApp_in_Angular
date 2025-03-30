@@ -58,6 +58,7 @@
 
 .bottom-section {
   height: 40%;
+  min-height: 300px; /* Ensure minimum height for the bottom section */
 }
 
 .hourly-forecast-card {
@@ -70,6 +71,14 @@
   height: 100%;
   display: flex;
   flex-direction: column;
+}
+
+.forecast-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  height: calc(100% - 40px); /* Account for the heading */
+  overflow: hidden; /* Prevent content overflow */
 }
 
 h2 {
@@ -177,8 +186,9 @@ h2 {
 /* Chart styles */
 .forecast-tabs {
   display: flex;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  flex-shrink: 0; /* Prevent tabs from shrinking */
 }
 
 .tab {
@@ -212,17 +222,19 @@ h2 {
   flex: 1;
   position: relative;
   width: 100%;
-  min-height: 250px; /* Ensure minimum height */
-  height: calc(100% - 50px); /* Adjust height to account for tabs */
-  margin-top: 10px;
+  min-height: 200px; /* Ensure minimum height */
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow: hidden; /* Prevent overflow */
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 
 .chart-container canvas {
   width: 100% !important;
   height: 100% !important;
+  max-width: 100%;
 }
 
 .loading-message {
