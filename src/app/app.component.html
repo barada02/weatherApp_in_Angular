@@ -1,11 +1,17 @@
-<!-- Cleaned up app.component.html with necessary structure and styles -->
+<!-- App component with styled navigation buttons in sidebar -->
 <div class="container">
   <div class="sidebar">
-    <h2>Sidebar</h2>
+    <h2>Weather App</h2>
+    <div class="nav-buttons">
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" class="nav-button">
+        <span class="nav-icon">🏠</span> Home
+      </a>
+      <a routerLink="/advanced" routerLinkActive="active" class="nav-button">
+        <span class="nav-icon">📊</span> Advanced
+      </a>
+    </div>
   </div>
   <div class="main-content">
     <router-outlet></router-outlet>
   </div>
 </div>
-
-
