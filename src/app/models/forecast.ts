@@ -52,6 +52,8 @@ export interface DailyForecast {
   precipitation: number;
   windSpeed: number;
   description: string;
+  weatherCode: number;
+  weatherIcon: string;
 }
 
 export interface HourlyForecast {
@@ -61,4 +63,6 @@ export interface HourlyForecast {
   precipitation: number;
   windSpeed: number;
   description: string;
+  weatherCode: number;
+  weatherIcon: string;
 }

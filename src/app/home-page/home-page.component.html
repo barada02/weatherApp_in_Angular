@@ -1,1 +1,140 @@
-<p>home-page works!</p>
+<div class="home-container">
+  <div class="top-section">
+    <div class="current-weather-card">
+      <h2>Current Weather</h2>
+      
+      <ng-container *ngIf="loading">
+        <div class="loading-spinner">
+          Loading weather data...
+        </div>
+      </ng-container>
+      
+      <ng-container *ngIf="error">
+        <div class="error-message">
+          {{ error }}
+        </div>
+      </ng-container>
+      
+      <ng-container *ngIf="currentWeather && !loading && !error">
+        <div class="weather-content">
+          <div class="location-info">
+            <h3>{{ currentWeather.city }}</h3>
+          </div>
+          
+          <div class="weather-details">
+            <div class="temp-icon-container">
+              <div class="temperature">
+                {{ currentWeather.temperature | number:'1.1-1' }}°C
+              </div>
+              <div class="weather-icon">
+                {{ currentWeather.weatherIcon }}
+              </div>
+            </div>
+            
+            <div class="weather-description">
+              {{ currentWeather.description }}
+            </div>
+          </div>
+          
+          <div class="weather-metrics">
+            <div class="metric">
+              <span class="metric-label">Humidity</span>
+              <span class="metric-value">{{ currentWeather.humidity }}%</span>
+            </div>
+            
+            <div class="metric">
+              <span class="metric-label">Wind</span>
+              <span class="metric-value">{{ currentWeather.windSpeed }} km/h</span>
+            </div>
+            
+            <div class="metric">
+              <span class="metric-label">Precipitation</span>
+              <span class="metric-value">{{ currentWeather.precipitation }}%</span>
+            </div>
+            <div class="metric">
+              <span class="metric-label">UV Index</span>
+              <span class="metric-value">{{ currentWeather.uvIndex }}</span>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+    
+    <div class="favorite-cities-card">
+      <h2>Favorite Cities</h2>
+      
+      <div class="add-city-form">
+        <input 
+          type="text" 
+          placeholder="Add a city..." 
+          [(ngModel)]="newCityName" 
+          (keyup.enter)="addFavoriteCity()"
+          class="city-input">
+        <button (click)="addFavoriteCity()" class="add-btn">Add</button>
+      </div>
+      
+      <div class="city-list">
+        <ng-container *ngIf="favoriteCities.length === 0">
+          <div class="empty-state">No favorite cities added yet.</div>
+        </ng-container>
+        
+        <div *ngFor="let city of favoriteCities" class="city-item">
+          <div class="city-name" (click)="selectCity(city.name)">{{ city.name }}</div>
+          <button class="remove-btn" (click)="removeFavoriteCity(city.id)">×</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="bottom-section">
+    <div class="hourly-forecast-card">
+      <h2>Hourly Forecast</h2>
+      
+      <ng-container *ngIf="forecastLoading">
+        <div class="loading-spinner">
+          Loading forecast data...
+        </div>
+      </ng-container>
+      
+      <ng-container *ngIf="forecastError">
+        <div class="error-message">
+          {{ forecastError }}
+        </div>
+      </ng-container>
+      
+      <ng-container *ngIf="hourlyForecast.length && !forecastLoading && !forecastError">
+        <div class="forecast-content">
+          <div class="forecast-tabs">
+            <div class="tab" 
+                 [ngClass]="{'active': activeTab === 'temperature'}"
+                 (click)="setActiveTab('temperature')">
+              Temperature
+            </div>
+            <div class="tab"
+                 [ngClass]="{'active': activeTab === 'precipitation'}"
+                 (click)="setActiveTab('precipitation')">
+              Precipitation
+            </div>
+            <div class="tab"
+                 [ngClass]="{'active': activeTab === 'wind'}"
+                 (click)="setActiveTab('wind')">
+              Wind
+            </div>
+          </div>
+          
+          <div class="chart-container">
+            <canvas *ngIf="hourlyForecast.length > 0"
+              baseChart
+              [type]="lineChartType"
+              [data]="lineChartData"
+              [options]="lineChartOptions">
+            </canvas>
+            <div *ngIf="hourlyForecast.length === 0" class="loading-message">
+              No forecast data available
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>
