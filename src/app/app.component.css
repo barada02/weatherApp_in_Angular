@@ -1,0 +1,76 @@
+/* Styles for app component with semi-transparent floating components */
+.container {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  max-height: 100vh;
+  padding: 20px;
+}
+
+.sidebar {
+  width: 250px;
+  background-color: rgba(45, 45, 65, 0.8); /* Semi-transparent dark background */
+  padding: 20px;
+  margin-right: 20px;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  overflow-y: auto;
+  height: calc(100% - 40px);
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sidebar h2 {
+  color: #fff;
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  text-align: center;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.nav-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.nav-button {
+  display: flex;
+  align-items: center;
+  padding: 12px 15px;
+  background-color: rgba(60, 60, 80, 0.6);
+  color: #e0e0e0;
+  text-decoration: none;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.nav-button:hover {
+  background-color: rgba(80, 80, 120, 0.8);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.nav-button.active {
+  background-color: rgba(100, 100, 255, 0.4);
+  border-left: 4px solid #8080ff;
+  font-weight: bold;
+}
+
+.nav-icon {
+  margin-right: 10px;
+  font-size: 1.2rem;
+}
+
+.main-content {
+  flex-grow: 1;
+  padding: 20px;
+  border-radius: 12px;
+  background-color: rgba(45, 45, 65, 0.7); /* Semi-transparent dark background */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  overflow-y: auto;
+  height: calc(100% - 40px);
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
