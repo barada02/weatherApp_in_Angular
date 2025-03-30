@@ -72,8 +72,62 @@
   
   <div class="bottom-section">
     <div class="hourly-forecast-card">
-      <h2>Hourly Forecast Data</h2>
-      <!-- Hourly forecast content will go here -->
+      <h2>Hourly Forecast</h2>
+      
+      <ng-container *ngIf="forecastLoading">
+        <div class="loading-spinner">
+          Loading forecast data...
+        </div>
+      </ng-container>
+      
+      <ng-container *ngIf="forecastError">
+        <div class="error-message">
+          {{ forecastError }}
+        </div>
+      </ng-container>
+      
+      <ng-container *ngIf="hourlyForecast.length && !forecastLoading && !forecastError">
+        <div class="forecast-tabs">
+          <div class="tab" 
+               [ngClass]="{'active': activeTab === 'temperature'}"
+               (click)="setActiveTab('temperature')">
+            Temperature
+          </div>
+          <div class="tab"
+               [ngClass]="{'active': activeTab === 'precipitation'}"
+               (click)="setActiveTab('precipitation')">
+            Precipitation
+          </div>
+          <div class="tab"
+               [ngClass]="{'active': activeTab === 'wind'}"
+               (click)="setActiveTab('wind')">
+            Wind
+          </div>
+        </div>
+        
+        <div class="forecast-chart">
+          <div class="chart-container">
+            <!-- Y-axis labels can be added here if needed -->
+            <div class="chart-grid">
+              <div class="chart-bars">
+                <div class="chart-bar" *ngFor="let item of hourlyForecast.slice(0, 8)">
+                  <div class="bar-value">
+                    {{ getValue(item) | number:'1.0-0' }}
+                    <ng-container [ngSwitch]="activeTab">
+                      <span *ngSwitchCase="'temperature'">°C</span>
+                      <span *ngSwitchCase="'precipitation'">%</span>
+                      <span *ngSwitchCase="'wind'">km/h</span>
+                    </ng-container>
+                  </div>
+                  <div class="bar-fill"
+                       [style.height.%]="getHeightPercentage(item)"></div>
+                  <div class="bar-time">{{ formatTime(item.time) }}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
     </div>
   </div>
 </div>

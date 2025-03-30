@@ -171,3 +171,105 @@ h2 {
   font-weight: 500;
   color: #ffffff;
 }
+
+/* Hourly forecast chart styles */
+.forecast-tabs {
+  display: flex;
+  margin-bottom: 15px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.tab {
+  padding: 8px 15px;
+  margin-right: 10px;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.6);
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.tab:hover {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.tab.active {
+  color: #ffffff;
+}
+
+.tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #ffde59; /* Yellow indicator for active tab */
+}
+
+.forecast-chart {
+  height: calc(100% - 80px);
+  margin-top: 10px;
+}
+
+.chart-container {
+  height: 100%;
+  position: relative;
+  padding: 10px 0;
+}
+
+.chart-grid {
+  height: 100%;
+  position: relative;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.chart-bars {
+  display: flex;
+  justify-content: space-between;
+  height: 100%;
+  align-items: flex-end;
+  padding-bottom: 30px; /* Space for time labels */
+}
+
+.chart-bar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  height: 100%;
+  position: relative;
+}
+
+.bar-value {
+  margin-bottom: 5px;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.bar-fill {
+  width: 3px;
+  background-color: #ffde59; /* Yellow bar */
+  border-radius: 3px;
+  position: relative;
+  min-height: 3px;
+}
+
+.bar-time {
+  position: absolute;
+  bottom: -25px;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* Active tab specific styles */
+.tab[data-tab="temperature"].active ~ .forecast-chart .bar-fill {
+  background-color: #ffde59; /* Yellow for temperature */
+}
+
+.tab[data-tab="precipitation"].active ~ .forecast-chart .bar-fill {
+  background-color: #64b5f6; /* Blue for precipitation */
+}
+
+.tab[data-tab="wind"].active ~ .forecast-chart .bar-fill {
+  background-color: #81c784; /* Green for wind */
+}
