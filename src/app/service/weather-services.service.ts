@@ -29,7 +29,7 @@ export class WeatherServicesService {
         }
 
         return {
-          city: city,
+          city: response.location.name,
           temperature: response.data.values.temperature,
           description: this.getWeatherDescription(
             response.data.values.cloudCover,

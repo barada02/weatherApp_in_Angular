@@ -1,16 +1,62 @@
 <div class="home-container">
   <div class="top-section">
     <div class="current-weather-card">
-      <h2>Current Weather Data</h2>
-      <!-- Current weather content will go here -->
+      <h2>Current Weather</h2>
+      
+      <ng-container *ngIf="loading">
+        <div class="loading-spinner">
+          Loading weather data...
+        </div>
+      </ng-container>
+      
+      <ng-container *ngIf="error">
+        <div class="error-message">
+          {{ error }}
+        </div>
+      </ng-container>
+      
+      <ng-container *ngIf="currentWeather && !loading && !error">
+        <div class="weather-content">
+          <div class="location-info">
+            <h3>{{ currentWeather.city }}</h3>
+          </div>
+          
+          <div class="weather-details">
+            <div class="temperature">
+              {{ currentWeather.temperature | number:'1.0-0' }}°C
+            </div>
+            
+            <div class="weather-description">
+              {{ currentWeather.description }}
+            </div>
+          </div>
+          
+          <div class="weather-metrics">
+            <div class="metric">
+              <span class="metric-label">Humidity</span>
+              <span class="metric-value">{{ currentWeather.humidity }}%</span>
+            </div>
+            
+            <div class="metric">
+              <span class="metric-label">Wind</span>
+              <span class="metric-value">{{ currentWeather.windSpeed }} km/h</span>
+            </div>
+            
+            <div class="metric">
+              <span class="metric-label">Precipitation</span>
+              <span class="metric-value">{{ currentWeather.precipitation }}%</span>
+            </div>
+          </div>
+        </div>
+      </ng-container>
     </div>
     
     <div class="favorite-cities-card">
       <h2>Favorite Cities</h2>
       <div class="city-list">
-        <div class="city-item">Hyderabad</div>
-        <div class="city-item">Delhi</div>
-        <div class="city-item">Chennai</div>
+        <div class="city-item" (click)="selectCity('Hyderabad')">Hyderabad</div>
+        <div class="city-item" (click)="selectCity('Delhi')">Delhi</div>
+        <div class="city-item" (click)="selectCity('Chennai')">Chennai</div>
       </div>
     </div>
   </div>
