@@ -39,6 +39,8 @@
   flex-direction: column;
   gap: 10px;
   margin-top: 15px;
+  max-height: 200px;
+  overflow-y: auto;
 }
 
 .city-item {
@@ -48,12 +50,77 @@
   cursor: pointer;
   transition: all 0.3s ease;
   border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .city-item:hover {
   background-color: rgba(80, 80, 120, 0.8);
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.city-name {
+  flex: 1;
+}
+
+.remove-btn {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0 0 0 10px;
+  transition: color 0.2s ease;
+}
+
+.remove-btn:hover {
+  color: #ff6b6b;
+}
+
+.add-city-form {
+  display: flex;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.city-input {
+  flex: 1;
+  padding: 8px 12px;
+  border-radius: 6px 0 0 6px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background-color: rgba(30, 30, 50, 0.6);
+  color: #fff;
+  font-size: 0.9rem;
+}
+
+.city-input:focus {
+  outline: none;
+  border-color: rgba(255, 222, 89, 0.5);
+}
+
+.add-btn {
+  padding: 8px 15px;
+  border-radius: 0 6px 6px 0;
+  border: none;
+  background-color: rgba(255, 222, 89, 0.8);
+  color: #333;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.add-btn:hover {
+  background-color: rgba(255, 222, 89, 1);
+}
+
+.empty-state {
+  color: rgba(255, 255, 255, 0.5);
+  text-align: center;
+  padding: 15px;
+  font-style: italic;
+  font-size: 0.9rem;
 }
 
 .bottom-section {

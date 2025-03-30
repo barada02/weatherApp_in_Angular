@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, AfterViewInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { WeatherServicesService } from '../service/weather-services.service';
 import { WeatherData } from '../models/current-weather';
 import { NgIf, DecimalPipe, NgFor, NgClass, NgSwitch, NgSwitchCase } from '@angular/common';
@@ -7,15 +7,18 @@ import { BaseChartDirective } from 'ng2-charts';
 import { Chart, ChartConfiguration, ChartEvent, ChartType, registerables } from 'chart.js';
 import { default as Annotation } from 'chartjs-plugin-annotation';
 import { CategoryScale, LinearScale, PointElement, LineElement, BarElement } from 'chart.js';
+import { FavoriteCitiesService, FavoriteCity } from '../service/favorite-cities.service';
+import { FormsModule } from '@angular/forms';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-home-page',
   standalone: true,
-  imports: [NgIf, DecimalPipe, NgFor, NgClass, NgSwitch, NgSwitchCase, BaseChartDirective],
+  imports: [NgIf, DecimalPipe, NgFor, NgClass, NgSwitch, NgSwitchCase, BaseChartDirective, FormsModule],
   templateUrl: './home-page.component.html',
   styleUrls: ['./home-page.component.css']
 })
-export class HomePageComponent implements OnInit, AfterViewInit {
+export class HomePageComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(BaseChartDirective) chart?: BaseChartDirective;
 
   currentWeather: WeatherData | null = null;
@@ -133,8 +136,14 @@ export class HomePageComponent implements OnInit, AfterViewInit {
 
   public lineChartType: ChartType = 'line';
   
+  // Favorite cities
+  favoriteCities: FavoriteCity[] = [];
+  newCityName = '';
+  private citiesSubscription: Subscription | null = null;
+
   constructor(
     private weatherService: WeatherServicesService,
+    private favoriteCitiesService: FavoriteCitiesService,
     private cdr: ChangeDetectorRef
   ) {
     // Register all Chart.js components
@@ -145,12 +154,25 @@ export class HomePageComponent implements OnInit, AfterViewInit {
     console.log('HomePageComponent initialized');
     this.getWeatherData(this.defaultCity);
     this.getForecastData(this.defaultCity);
+    
+    // Subscribe to favorite cities
+    this.citiesSubscription = this.favoriteCitiesService.favoriteCities$.subscribe(cities => {
+      this.favoriteCities = cities;
+      this.cdr.detectChanges();
+    });
   }
 
   ngAfterViewInit() {
     // Initial chart update after view is initialized
     if (this.hourlyForecast.length > 0) {
       this.updateChartData();
+    }
+  }
+  
+  ngOnDestroy() {
+    // Clean up subscription
+    if (this.citiesSubscription) {
+      this.citiesSubscription.unsubscribe();
     }
   }
   
@@ -315,5 +337,39 @@ export class HomePageComponent implements OnInit, AfterViewInit {
   formatTime(timeString: string): string {
     const date = new Date(timeString);
     return date.getHours() + ':00';
+  }
+
+  // Favorite cities methods
+  addFavoriteCity() {
+    if (this.newCityName && this.newCityName.trim()) {
+      this.favoriteCitiesService.addCity(this.newCityName.trim())
+        .subscribe({
+          next: (city) => {
+            console.log('City added:', city);
+            this.newCityName = ''; // Clear input field
+          },
+          error: (err) => {
+            console.error('Error adding city:', err);
+          }
+        });
+    }
+  }
+
+  removeFavoriteCity(cityId?: string) {
+    if (cityId) {
+      this.favoriteCitiesService.removeCity(cityId)
+        .subscribe({
+          next: (success) => {
+            if (success) {
+              console.log('City removed successfully');
+            } else {
+              console.error('Failed to remove city');
+            }
+          },
+          error: (err) => {
+            console.error('Error removing city:', err);
+          }
+        });
+    }
   }
 }
