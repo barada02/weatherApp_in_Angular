@@ -22,11 +22,13 @@
           </div>
           
           <div class="weather-details">
-            <div class="weather-icon">
-              {{ currentWeather.weatherIcon }}
-            </div>
-            <div class="temperature">
-              {{ currentWeather.temperature | number:'1.0-0' }}°C
+            <div class="temp-icon-container">
+              <div class="temperature">
+                {{ currentWeather.temperature | number:'1.0-0' }}°C
+              </div>
+              <div class="weather-icon">
+                {{ currentWeather.weatherIcon }}
+              </div>
             </div>
             
             <div class="weather-description">
