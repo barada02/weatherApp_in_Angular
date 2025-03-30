@@ -68,6 +68,8 @@
   border: 1px solid rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(5px);
   height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 h2 {
@@ -172,7 +174,7 @@ h2 {
   color: #ffffff;
 }
 
-/* Hourly forecast chart styles */
+/* Chart styles */
 .forecast-tabs {
   display: flex;
   margin-bottom: 15px;
@@ -206,15 +208,32 @@ h2 {
   background-color: #ffde59; /* Yellow indicator for active tab */
 }
 
+.chart-container {
+  flex: 1;
+  position: relative;
+  width: 100%;
+  min-height: 250px; /* Ensure minimum height */
+  height: calc(100% - 50px); /* Adjust height to account for tabs */
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.chart-container canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.loading-message {
+  color: rgba(255, 255, 255, 0.7);
+  text-align: center;
+  padding: 20px;
+}
+
 .forecast-chart {
   height: calc(100% - 80px);
   margin-top: 10px;
-}
-
-.chart-container {
-  height: 100%;
-  position: relative;
-  padding: 10px 0;
 }
 
 .chart-grid {

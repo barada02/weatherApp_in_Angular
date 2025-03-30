@@ -24,7 +24,7 @@
           <div class="weather-details">
             <div class="temp-icon-container">
               <div class="temperature">
-                {{ currentWeather.temperature | number:'1.0-0' }}°C
+                {{ currentWeather.temperature | number:'1.1-1' }}°C
               </div>
               <div class="weather-icon">
                 {{ currentWeather.weatherIcon }}
@@ -105,26 +105,15 @@
           </div>
         </div>
         
-        <div class="forecast-chart">
-          <div class="chart-container">
-            <!-- Y-axis labels can be added here if needed -->
-            <div class="chart-grid">
-              <div class="chart-bars">
-                <div class="chart-bar" *ngFor="let item of hourlyForecast.slice(0, 8)">
-                  <div class="bar-value">
-                    {{ getValue(item) | number:'1.0-0' }}
-                    <ng-container [ngSwitch]="activeTab">
-                      <span *ngSwitchCase="'temperature'">°C</span>
-                      <span *ngSwitchCase="'precipitation'">%</span>
-                      <span *ngSwitchCase="'wind'">km/h</span>
-                    </ng-container>
-                  </div>
-                  <div class="bar-fill"
-                       [style.height.%]="getHeightPercentage(item)"></div>
-                  <div class="bar-time">{{ formatTime(item.time) }}</div>
-                </div>
-              </div>
-            </div>
+        <div class="chart-container">
+          <canvas *ngIf="hourlyForecast.length > 0"
+            baseChart
+            [type]="lineChartType"
+            [data]="lineChartData"
+            [options]="lineChartOptions">
+          </canvas>
+          <div *ngIf="hourlyForecast.length === 0" class="loading-message">
+            No forecast data available
           </div>
         </div>
       </ng-container>
