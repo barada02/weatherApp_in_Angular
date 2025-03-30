@@ -61,7 +61,12 @@ export class HomePageComponent implements OnInit, AfterViewInit {
           font: {
             size: 10 // Smaller font size for x-axis labels
           },
-          maxRotation: 0 // Prevent label rotation
+          maxRotation: 0, // Prevent label rotation
+          padding: 0 // Reduce padding
+        },
+        offset: false, // Remove offset
+        border: {
+          display: false // Hide border
         }
       },
       y: {
@@ -73,9 +78,12 @@ export class HomePageComponent implements OnInit, AfterViewInit {
           font: {
             size: 10 // Smaller font size for y-axis labels
           },
-          padding: 5 // Add some padding
+          padding: 3 // Reduce padding
         },
-        beginAtZero: true
+        beginAtZero: true,
+        border: {
+          display: false // Hide border
+        }
       },
     },
     plugins: {
@@ -87,7 +95,8 @@ export class HomePageComponent implements OnInit, AfterViewInit {
           font: {
             size: 12 // Smaller legend font size
           },
-          padding: 10
+          padding: 5, // Reduce padding
+          boxWidth: 12 // Smaller legend box
         }
       },
       tooltip: {
@@ -96,7 +105,7 @@ export class HomePageComponent implements OnInit, AfterViewInit {
         bodyColor: '#fff',
         borderColor: 'rgba(255, 255, 255, 0.2)',
         borderWidth: 1,
-        padding: 10,
+        padding: 8,
         displayColors: false // Hide color boxes in tooltip
       }
     },
@@ -105,10 +114,10 @@ export class HomePageComponent implements OnInit, AfterViewInit {
     },
     layout: {
       padding: {
-        top: 5,
-        right: 10,
-        bottom: 5,
-        left: 10
+        top: 0,
+        right: 5,
+        bottom: 15, // Add more padding at bottom for x-axis labels
+        left: 5
       }
     },
     elements: {
@@ -251,6 +260,33 @@ export class HomePageComponent implements OnInit, AfterViewInit {
           pointRadius: 4,
         }]
       };
+
+      // Update chart options based on active tab
+      const options = { ...this.lineChartOptions };
+      
+      // Adjust y-axis based on data type
+      if (this.activeTab === 'temperature') {
+        // For temperature, set a reasonable min/max range
+        if (options.scales && options.scales['y']) {
+          options.scales['y']['min'] = Math.floor(Math.min(...chartData) - 5);
+          options.scales['y']['max'] = Math.ceil(Math.max(...chartData) + 5);
+        }
+      } else if (this.activeTab === 'precipitation') {
+        // For precipitation, 0-100%
+        if (options.scales && options.scales['y']) {
+          options.scales['y']['min'] = 0;
+          options.scales['y']['max'] = 100;
+        }
+      } else if (this.activeTab === 'wind') {
+        // For wind, start at 0 with reasonable max
+        if (options.scales && options.scales['y']) {
+          options.scales['y']['min'] = 0;
+          options.scales['y']['max'] = Math.ceil(Math.max(...chartData) + 2);
+        }
+      }
+
+      // Apply updated options
+      this.lineChartOptions = options;
 
       console.log('Chart configuration:', JSON.stringify(this.lineChartData));
       console.log('Chart object exists:', !!this.chart);

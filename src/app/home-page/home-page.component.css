@@ -186,18 +186,20 @@ h2 {
 /* Chart styles */
 .forecast-tabs {
   display: flex;
-  margin-bottom: 10px;
+  margin-bottom: 5px; /* Reduce bottom margin */
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   flex-shrink: 0; /* Prevent tabs from shrinking */
+  padding-bottom: 5px; /* Add padding at bottom of tabs */
 }
 
 .tab {
-  padding: 8px 15px;
+  padding: 6px 12px; /* Reduce padding */
   margin-right: 10px;
   cursor: pointer;
   color: rgba(255, 255, 255, 0.6);
   position: relative;
   transition: all 0.3s ease;
+  font-size: 0.9rem; /* Slightly smaller font */
 }
 
 .tab:hover {
@@ -222,13 +224,13 @@ h2 {
   flex: 1;
   position: relative;
   width: 100%;
-  min-height: 200px; /* Ensure minimum height */
+  min-height: 180px; /* Slightly smaller minimum height */
   display: flex;
   justify-content: center;
   align-items: center;
   overflow: hidden; /* Prevent overflow */
-  padding-top: 10px;
-  padding-bottom: 10px;
+  padding-top: 5px;
+  padding-bottom: 20px; /* More padding at bottom for labels */
 }
 
 .chart-container canvas {
