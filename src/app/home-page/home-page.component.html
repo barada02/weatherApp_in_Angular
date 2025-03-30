@@ -62,10 +62,26 @@
     
     <div class="favorite-cities-card">
       <h2>Favorite Cities</h2>
+      
+      <div class="add-city-form">
+        <input 
+          type="text" 
+          placeholder="Add a city..." 
+          [(ngModel)]="newCityName" 
+          (keyup.enter)="addFavoriteCity()"
+          class="city-input">
+        <button (click)="addFavoriteCity()" class="add-btn">Add</button>
+      </div>
+      
       <div class="city-list">
-        <div class="city-item" (click)="selectCity('Hyderabad')">Hyderabad</div>
-        <div class="city-item" (click)="selectCity('Delhi')">Delhi</div>
-        <div class="city-item" (click)="selectCity('Chennai')">Chennai</div>
+        <ng-container *ngIf="favoriteCities.length === 0">
+          <div class="empty-state">No favorite cities added yet.</div>
+        </ng-container>
+        
+        <div *ngFor="let city of favoriteCities" class="city-item">
+          <div class="city-name" (click)="selectCity(city.name)">{{ city.name }}</div>
+          <button class="remove-btn" (click)="removeFavoriteCity(city.id)">×</button>
+        </div>
       </div>
     </div>
   </div>
