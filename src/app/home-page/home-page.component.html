@@ -22,6 +22,9 @@
           </div>
           
           <div class="weather-details">
+            <div class="weather-icon">
+              {{ currentWeather.weatherIcon }}
+            </div>
             <div class="temperature">
               {{ currentWeather.temperature | number:'1.0-0' }}°C
             </div>
@@ -45,6 +48,10 @@
             <div class="metric">
               <span class="metric-label">Precipitation</span>
               <span class="metric-value">{{ currentWeather.precipitation }}%</span>
+            </div>
+            <div class="metric">
+              <span class="metric-label">UV Index</span>
+              <span class="metric-value">{{ currentWeather.uvIndex }}</span>
             </div>
           </div>
         </div>

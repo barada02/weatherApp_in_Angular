@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, map, catchError, of, BehaviorSubject } from 'rxjs';
-import { WeatherData,TomorrowApiResponse} from '../models/current-weather';
+import { WeatherData, TomorrowApiResponse, WEATHER_CODES, WEATHER_ICONS } from '../models/current-weather';
 import { ForecastResponse, DailyForecast, HourlyForecast } from '../models/forecast';
 import { environment } from '../../environments/environment.local';
 
@@ -28,17 +28,19 @@ export class WeatherServicesService {
           return null;
         }
 
+        const weatherCode = response.data.values.weatherCode || 1000; // Default to Clear if no code
+        
         return {
           city: response.location.name,
           temperature: response.data.values.temperature,
-          description: this.getWeatherDescription(
-            response.data.values.cloudCover,
-            response.data.values.precipitationProbability
-          ),
+          description: WEATHER_CODES[weatherCode as keyof typeof WEATHER_CODES] || 'Unknown',
           humidity: response.data.values.humidity,
           windSpeed: response.data.values.windSpeed,
           precipitation: response.data.values.precipitationProbability,
-          cloudCover: response.data.values.cloudCover
+          cloudCover: response.data.values.cloudCover,
+          uvIndex: response.data.values.uvIndex,
+          weatherCode: weatherCode,
+          weatherIcon: WEATHER_ICONS[weatherCode as keyof typeof WEATHER_ICONS] || 'u2753'
         };
       }),
       catchError(error => {
