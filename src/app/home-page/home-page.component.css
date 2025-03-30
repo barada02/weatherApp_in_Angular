@@ -1,0 +1,308 @@
+/* Styles for home page layout */
+.home-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  height: 100%;
+}
+
+.top-section {
+  display: flex;
+  gap: 20px;
+  height: 60%;
+}
+
+.current-weather-card {
+  flex: 2;
+  background-color: rgba(45, 45, 65, 0.7);
+  border-radius: 12px;
+  padding: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(5px);
+}
+
+.favorite-cities-card {
+  flex: 1;
+  background-color: rgba(45, 45, 65, 0.7);
+  border-radius: 12px;
+  padding: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(5px);
+  display: flex;
+  flex-direction: column;
+}
+
+.city-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.city-item {
+  padding: 12px 15px;
+  background-color: rgba(60, 60, 80, 0.6);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.city-item:hover {
+  background-color: rgba(80, 80, 120, 0.8);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.bottom-section {
+  height: 40%;
+  min-height: 300px; /* Ensure minimum height for the bottom section */
+}
+
+.hourly-forecast-card {
+  background-color: rgba(45, 45, 65, 0.7);
+  border-radius: 12px;
+  padding: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(5px);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.forecast-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  height: calc(100% - 40px); /* Account for the heading */
+  overflow: hidden; /* Prevent content overflow */
+}
+
+h2 {
+  color: #fff;
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-size: 1.2rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 8px;
+}
+
+/* Weather content styles */
+.loading-spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  color: rgba(255, 255, 255, 0.7);
+  font-style: italic;
+}
+
+.error-message {
+  color: #ff6b6b;
+  padding: 20px;
+  text-align: center;
+  background-color: rgba(255, 107, 107, 0.1);
+  border-radius: 8px;
+  margin: 20px 0;
+}
+
+.weather-content {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.location-info h3 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #ffffff;
+  font-weight: 500;
+}
+
+.weather-details {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 15px 0;
+  margin-left: 20px;
+}
+
+.temp-icon-container {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.temperature {
+  font-size: 3rem;
+  font-weight: bold;
+  color: #ffffff;
+  margin-bottom: 5px;
+}
+
+.weather-icon {
+  font-size: 2.5rem;
+  margin-left: 10px;
+}
+
+.weather-description {
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.9);
+  text-transform: capitalize;
+  margin-top: 5px;
+}
+
+.weather-metrics {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  background-color: rgba(30, 30, 50, 0.5);
+  border-radius: 8px;
+  margin-top: 10px;
+}
+
+.metric {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 5px 10px;
+}
+
+.metric-label {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 5px;
+}
+
+.metric-value {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #ffffff;
+}
+
+/* Chart styles */
+.forecast-tabs {
+  display: flex;
+  margin-bottom: 5px; /* Reduce bottom margin */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  flex-shrink: 0; /* Prevent tabs from shrinking */
+  padding-bottom: 5px; /* Add padding at bottom of tabs */
+}
+
+.tab {
+  padding: 6px 12px; /* Reduce padding */
+  margin-right: 10px;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.6);
+  position: relative;
+  transition: all 0.3s ease;
+  font-size: 0.9rem; /* Slightly smaller font */
+}
+
+.tab:hover {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.tab.active {
+  color: #ffffff;
+}
+
+.tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #ffde59; /* Yellow indicator for active tab */
+}
+
+.chart-container {
+  flex: 1;
+  position: relative;
+  width: 100%;
+  min-height: 180px; /* Slightly smaller minimum height */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden; /* Prevent overflow */
+  padding-top: 5px;
+  padding-bottom: 20px; /* More padding at bottom for labels */
+}
+
+.chart-container canvas {
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100%;
+}
+
+.loading-message {
+  color: rgba(255, 255, 255, 0.7);
+  text-align: center;
+  padding: 20px;
+}
+
+.forecast-chart {
+  height: calc(100% - 80px);
+  margin-top: 10px;
+}
+
+.chart-grid {
+  height: 100%;
+  position: relative;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.chart-bars {
+  display: flex;
+  justify-content: space-between;
+  height: 100%;
+  align-items: flex-end;
+  padding-bottom: 30px; /* Space for time labels */
+}
+
+.chart-bar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  height: 100%;
+  position: relative;
+}
+
+.bar-value {
+  margin-bottom: 5px;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.bar-fill {
+  width: 3px;
+  background-color: #ffde59; /* Yellow bar */
+  border-radius: 3px;
+  position: relative;
+  min-height: 3px;
+}
+
+.bar-time {
+  position: absolute;
+  bottom: -25px;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* Active tab specific styles */
+.tab[data-tab="temperature"].active ~ .forecast-chart .bar-fill {
+  background-color: #ffde59; /* Yellow for temperature */
+}
+
+.tab[data-tab="precipitation"].active ~ .forecast-chart .bar-fill {
+  background-color: #64b5f6; /* Blue for precipitation */
+}
+
+.tab[data-tab="wind"].active ~ .forecast-chart .bar-fill {
+  background-color: #81c784; /* Green for wind */
+}
