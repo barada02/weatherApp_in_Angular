@@ -40,7 +40,7 @@ export class WeatherServicesService {
           cloudCover: response.data.values.cloudCover,
           uvIndex: response.data.values.uvIndex,
           weatherCode: weatherCode,
-          weatherIcon: WEATHER_ICONS[weatherCode as keyof typeof WEATHER_ICONS] || 'u2753'
+          weatherIcon: WEATHER_ICONS[weatherCode as keyof typeof WEATHER_ICONS] || '❓'
         };
       }),
       catchError(error => {
@@ -62,31 +62,35 @@ export class WeatherServicesService {
           throw new Error('Missing timeline data');
         }
 
-        const dailyForecast = response.timelines.daily.map(day => ({
-          date: day.time,
-          temperature: day.values.temperatureAvg ?? day.values.temperature ?? 0,
-          temperatureMin: day.values.temperatureMin ?? 0,
-          temperatureMax: day.values.temperatureMax ?? 0,
-          humidity: day.values.humidityAvg ?? day.values.humidity ?? 0,
-          precipitation: day.values.precipitationProbabilityAvg ?? day.values.precipitationProbability ?? 0,
-          windSpeed: day.values.windSpeedAvg ?? day.values.windSpeed ?? 0,
-          description: this.getWeatherDescription(
-            day.values.cloudCoverAvg ?? day.values.cloudCover,
-            day.values.precipitationProbabilityAvg ?? day.values.precipitationProbability
-          )
-        }));
+        const dailyForecast = response.timelines.daily.map(day => {
+          const weatherCode = day.values.weatherCode || 1000;
+          return {
+            date: day.time,
+            temperature: day.values.temperatureAvg ?? day.values.temperature ?? 0,
+            temperatureMin: day.values.temperatureMin ?? 0,
+            temperatureMax: day.values.temperatureMax ?? 0,
+            humidity: day.values.humidityAvg ?? day.values.humidity ?? 0,
+            precipitation: day.values.precipitationProbabilityAvg ?? day.values.precipitationProbability ?? 0,
+            windSpeed: day.values.windSpeedAvg ?? day.values.windSpeed ?? 0,
+            description: WEATHER_CODES[weatherCode as keyof typeof WEATHER_CODES] || 'Unknown',
+            weatherCode: weatherCode,
+            weatherIcon: WEATHER_ICONS[weatherCode as keyof typeof WEATHER_ICONS] || '❓'
+          };
+        });
 
-        const hourlyForecast = response.timelines.hourly.map(hour => ({
-          time: hour.time,
-          temperature: hour.values.temperature ?? 0,
-          humidity: hour.values.humidity ?? 0,
-          precipitation: hour.values.precipitationProbability ?? 0,
-          windSpeed: hour.values.windSpeed ?? 0,
-          description: this.getWeatherDescription(
-            hour.values.cloudCover,
-            hour.values.precipitationProbability
-          )
-        }));
+        const hourlyForecast = response.timelines.hourly.map(hour => {
+          const weatherCode = hour.values.weatherCode || 1000;
+          return {
+            time: hour.time,
+            temperature: hour.values.temperature ?? 0,
+            humidity: hour.values.humidity ?? 0,
+            precipitation: hour.values.precipitationProbability ?? 0,
+            windSpeed: hour.values.windSpeed ?? 0,
+            description: WEATHER_CODES[weatherCode as keyof typeof WEATHER_CODES] || 'Unknown',
+            weatherCode: weatherCode,
+            weatherIcon: WEATHER_ICONS[weatherCode as keyof typeof WEATHER_ICONS] || '❓'
+          };
+        });
 
         return {
           daily: dailyForecast,
@@ -98,18 +102,5 @@ export class WeatherServicesService {
         return of(null);
       })
     );
-  }
-
-  private getWeatherDescription(cloudCover: number | undefined, precipProb: number | undefined): string {
-    const cloudCoverValue = cloudCover ?? 0;
-    const precipProbValue = precipProb ?? 0;
-
-    if (precipProbValue > 50) {
-      return 'Likely to rain';
-    } else if (cloudCoverValue > 50) {
-      return 'Cloudy';
-    } else {
-      return 'Clear';
-    }
   }
 }
