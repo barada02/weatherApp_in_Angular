@@ -1,1 +1,136 @@
-<p>advanced-data-page works!</p>
+<div class="advanced-data-container">
+  <div class="controls-section">
+    <div class="control-group">
+      <label for="city">City</label>
+      <div class="select-wrapper">
+        <select id="city" [(ngModel)]="selectedCity" (change)="onCityChange()">
+          <option value="Hyderabad">Hyderabad</option>
+          <option value="Mumbai">Mumbai</option>
+          <option value="Delhi">Delhi</option>
+          <option value="Bangalore">Bangalore</option>
+          <option value="Chennai">Chennai</option>
+          <option value="Kolkata">Kolkata</option>
+          <option value="London">London</option>
+          <option value="New York">New York</option>
+          <option value="Tokyo">Tokyo</option>
+          <option value="Paris">Paris</option>
+        </select>
+      </div>
+    </div>
+    
+    <div class="control-group">
+      <label for="metric">Metric</label>
+      <div class="select-wrapper">
+        <select id="metric" [(ngModel)]="selectedMetric" (change)="onMetricChange()">
+          <option value="temperature">Temperature</option>
+          <option value="precipitation">Precipitation</option>
+          <option value="wind">Wind Speed</option>
+          <option value="humidity">Humidity</option>
+        </select>
+      </div>
+    </div>
+    
+    <div class="control-group">
+      <label for="timeRange">Time Range</label>
+      <div class="select-wrapper">
+        <select id="timeRange" [(ngModel)]="selectedTimeRange" (change)="onTimeRangeChange()">
+          <option value="24h">24 Hours</option>
+          <option value="48h">48 Hours</option>
+          <option value="7d">7 Days</option>
+        </select>
+      </div>
+    </div>
+    
+    <div class="control-group">
+      <button class="report-button" (click)="generateReport()" [disabled]="generatingReport">
+        <span *ngIf="!generatingReport">Download Report</span>
+        <span *ngIf="generatingReport">Generating...</span>
+      </button>
+      <div *ngIf="reportSuccess" class="report-message success">Report downloaded successfully!</div>
+      <div *ngIf="reportError" class="report-message error">Failed to generate report. Try again.</div>
+    </div>
+  </div>
+  
+  <div class="content-section">
+    <div class="loading-container" *ngIf="loading">
+      <div class="loading-spinner"></div>
+      <p>Loading weather data...</p>
+    </div>
+    
+    <div class="error-container" *ngIf="error">
+      <p>{{ error }}</p>
+      <button (click)="onCityChange()">Try Again</button>
+    </div>
+    
+    <div class="data-container" *ngIf="!loading && !error && hourlyForecast.length > 0">
+      <div class="chart-container">
+        <h2>{{ selectedMetric | titlecase }} Chart</h2>
+        <div class="chart-wrapper">
+          <canvas baseChart
+            [data]="chartData"
+            [options]="chartOptions"
+            [type]="chartType">
+          </canvas>
+        </div>
+      </div>
+      
+      <div class="insights-container">
+        <h2>Weather Insights</h2>
+        <div class="insights-list">
+          <div class="insight-card" *ngFor="let insight of weatherInsights.slice(0, 3)">
+            <div class="insight-icon" [ngClass]="insight.type"></div>
+            <div class="insight-content">
+              <h3>{{ insight.title }}</h3>
+              <p>{{ insight.description }}</p>
+            </div>
+          </div>
+          
+          <div class="insight-card recommendation" *ngIf="weatherInsights.length > 0">
+            <div class="insight-icon recommendation"></div>
+            <div class="insight-content">
+              <h3>Recommendation</h3>
+              <p>{{ getRecommendation() }}</p>
+            </div>
+          </div>
+          
+          <div class="no-insights" *ngIf="weatherInsights.length === 0">
+            <p>No insights available for the selected location.</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="forecast-table">
+        <h2>Daily Forecast</h2>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Condition</th>
+                <th>Temp (°C)</th>
+                <th>Precip (%)</th>
+                <th>Wind (km/h)</th>
+                <th>Humidity (%)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let day of dailyForecast.slice(0, 5)">
+                <td>{{ day.date | date:'EEE, MMM d' }}</td>
+                <td>
+                  <div class="condition-cell">
+                    <span class="condition-icon" [ngClass]="day.description.toLowerCase().replace(' ', '-')"></span>
+                    <span>{{ day.description }}</span>
+                  </div>
+                </td>
+                <td>{{ day.temperatureMin | number:'1.0-0' }}° - {{ day.temperatureMax | number:'1.0-0' }}°</td>
+                <td>{{ day.precipitation | number:'1.0-0' }}%</td>
+                <td>{{ day.windSpeed | number:'1.0-0' }}</td>
+                <td>{{ day.humidity | number:'1.0-0' }}%</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
