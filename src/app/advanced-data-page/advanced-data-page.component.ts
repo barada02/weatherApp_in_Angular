@@ -9,6 +9,7 @@ import { BaseChartDirective } from 'ng2-charts';
 import { Chart, ChartConfiguration, ChartType, registerables } from 'chart.js';
 import { Subscription } from 'rxjs';
 import { AppComponent } from '../app.component';
+import { FavoriteCitiesService, FavoriteCity } from '../service/favorite-cities.service';
 
 @Component({
   selector: 'app-advanced-data-page',
@@ -35,6 +36,12 @@ export class AdvancedDataPageComponent implements OnInit, AfterViewInit, OnDestr
   generatingReport = false;
   reportSuccess = false;
   reportError = false;
+  
+  // Favorite cities
+  favoriteCities: FavoriteCity[] = [];
+  newCityName = '';
+  addingCity = false;
+  cityError = '';
   
   // Chart configuration
   public chartData: ChartConfiguration['data'] = {
@@ -146,7 +153,8 @@ export class AdvancedDataPageComponent implements OnInit, AfterViewInit, OnDestr
   constructor(
     private weatherService: WeatherServicesService,
     private advancedWeatherService: AdvancedWeatherService,
-    private appComponent: AppComponent
+    private appComponent: AppComponent,
+    private favoriteCitiesService: FavoriteCitiesService
   ) {
     // Register all Chart.js components
     Chart.register(...registerables);
@@ -174,11 +182,19 @@ export class AdvancedDataPageComponent implements OnInit, AfterViewInit, OnDestr
       
       this.appComponent.weatherInsights$.subscribe(data => {
         this.weatherInsights = data;
+      }),
+      
+      // Subscribe to favorite cities
+      this.favoriteCitiesService.favoriteCities$.subscribe(cities => {
+        this.favoriteCities = cities;
       })
     );
     
     // Initialize with the current city from the app component
     this.selectedCity = this.appComponent.city;
+    
+    // Load favorite cities from Firebase
+    this.favoriteCitiesService.loadFavoriteCities();
   }
   
   ngAfterViewInit() {
@@ -203,6 +219,64 @@ export class AdvancedDataPageComponent implements OnInit, AfterViewInit, OnDestr
   
   onTimeRangeChange() {
     this.updateChartData();
+  }
+  
+  // Add a new favorite city
+  addFavoriteCity() {
+    this.addingCity = true;
+    this.cityError = '';
+    
+    if (!this.newCityName.trim()) {
+      this.cityError = 'Please enter a city name';
+      this.addingCity = false;
+      return;
+    }
+    
+    // Check if city already exists
+    const cityExists = this.favoriteCities.some(
+      city => city.name.toLowerCase() === this.newCityName.trim().toLowerCase()
+    );
+    
+    if (cityExists) {
+      this.cityError = 'City already in favorites';
+      this.addingCity = false;
+      return;
+    }
+    
+    this.favoriteCitiesService.addCity(this.newCityName.trim()).subscribe({
+      next: () => {
+        this.newCityName = '';
+        this.addingCity = false;
+        // Refresh the list
+        this.favoriteCitiesService.loadFavoriteCities();
+      },
+      error: (err) => {
+        console.error('Error adding city:', err);
+        this.cityError = 'Failed to add city. Please try again.';
+        this.addingCity = false;
+      }
+    });
+  }
+  
+  // Remove a favorite city
+  removeFavoriteCity(cityId: string | undefined) {
+    if (!cityId) return;
+    
+    this.favoriteCitiesService.removeCity(cityId).subscribe({
+      next: () => {
+        // Refresh the list
+        this.favoriteCitiesService.loadFavoriteCities();
+      },
+      error: (err) => {
+        console.error('Error removing city:', err);
+      }
+    });
+  }
+  
+  // Select a favorite city
+  selectFavoriteCity(cityName: string) {
+    this.selectedCity = cityName;
+    this.onCityChange();
   }
   
   updateChartData() {

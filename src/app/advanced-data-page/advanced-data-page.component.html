@@ -51,6 +51,38 @@
     </div>
   </div>
   
+  <!-- Favorite Cities Section -->
+  <div class="favorite-cities-section">
+    <h3>Favorite Cities</h3>
+    <div class="favorite-cities-container">
+      <div class="favorite-cities-list">
+        <div *ngIf="favoriteCities.length === 0" class="no-favorites">
+          No favorite cities yet. Add some below!
+        </div>
+        <div *ngFor="let city of favoriteCities" class="favorite-city-item">
+          <span class="city-name" (click)="selectFavoriteCity(city.name)">{{ city.name }}</span>
+          <button class="remove-city" (click)="removeFavoriteCity(city.id)">&times;</button>
+        </div>
+      </div>
+      <div class="add-city-form">
+        <input 
+          type="text" 
+          [(ngModel)]="newCityName" 
+          placeholder="Add a new city"
+          [disabled]="addingCity"
+        >
+        <button 
+          (click)="addFavoriteCity()" 
+          [disabled]="addingCity || !newCityName.trim()"
+        >
+          <span *ngIf="!addingCity">Add</span>
+          <span *ngIf="addingCity">Adding...</span>
+        </button>
+      </div>
+      <div *ngIf="cityError" class="city-error">{{ cityError }}</div>
+    </div>
+  </div>
+  
   <div class="content-section">
     <div class="loading-container" *ngIf="loading">
       <div class="loading-spinner"></div>
